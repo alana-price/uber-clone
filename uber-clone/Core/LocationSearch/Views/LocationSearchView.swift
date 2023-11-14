@@ -30,14 +30,16 @@ struct LocationSearchView: View {
                         .frame(width: 6, height: 6)
                 }
                 
-                VStack {
+                VStack(alignment: .leading) {
                     TextField("Current location", text: $startLocationText)
                         .frame(height: 32)
+                        .padding(.leading, 10)
                         .background(Color(
                             .systemGroupedBackground))
                         .padding(.trailing)
                     TextField("Where to?", text: $viewModel.queryFragment)
                         .frame(height: 32)
+                        .padding(.leading, 10)
                         .background(Color(.systemGray4))
                         .padding(.trailing)
                 }
@@ -54,15 +56,17 @@ struct LocationSearchView: View {
                     ForEach(viewModel.results, id: \.self) { result in
                         LocationSearchResultCell(title: result.title, subtitle: result.subtitle)
                             .onTapGesture {
-                                viewModel.selectLocation(result)
-                                mapState = .locationSelected
+                                withAnimation(.spring()) {
+                                    viewModel.selectLocation(result)
+                                    mapState = .locationSelected
+                                }
                             }
                     }
                 }
             }
         }
+        .background(Color.theme.backgroundColor)
         .background(.white)
-        
     }
 }
 
